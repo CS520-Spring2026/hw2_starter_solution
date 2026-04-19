@@ -1,0 +1,91 @@
+
+
+import static org.junit.Assert.assertEquals;
+
+import javax.swing.table.DefaultTableModel;
+
+import org.junit.Before;
+import org.junit.Test;
+
+import controller.ExpenseTrackerController;
+import model.ExpenseTrackerModel;
+import model.Transaction;
+import view.DataPanelView;
+import view.ExpenseTrackerView;
+
+public class ExpenseTrackerTest {
+
+  // For unit testing
+  private ExpenseTrackerModel model;
+  // For end-to-end testing
+  private ExpenseTrackerController controller;
+
+  @Before
+  public void setup() {
+	model = new ExpenseTrackerModel();
+	controller = new ExpenseTrackerController();
+  }
+  
+  @Test
+  public void testInitialConfiguration() {
+    // There aren't any pre-conditions to be checked
+    // The setup method called the constructors
+    // Check the post-conditions
+    assertEquals(0, model.getTransactions().size());
+  }
+
+  private void testAddTransactionHelper(double amount, String category) {
+	    // Check the pre-conditions
+	    assertEquals(0, model.getTransactions().size());
+		
+	    // Create a new transaction and add it
+	    Transaction transaction = new Transaction(amount, category);
+	    model.addTransaction(transaction);
+
+	    // Check the post-conditions: 
+	    // Verify that the transaction was added appropriately
+	    java.util.List<Transaction> transactions = model.getTransactions();
+	    assertEquals(1, transactions.size());
+	    assertEquals(amount, transactions.get(0).getAmount(), 0.001);
+	    assertEquals(category, transactions.get(0).getCategory());
+	    assertEquals(amount, model.computeTransactionsTotalCost(), 0.001);
+  }
+  
+  @Test
+  public void testAddTransaction() {
+	  double amount = 100.0;
+	  String category = "Food";
+	  this.testAddTransactionHelper(amount, category);
+  }
+  
+  @Test
+  public void testRemoveTransaction() {
+	  // Initialize: Add a new transaction
+	  double amount = 100.0;
+	  String category = "Food";
+	  this.testAddTransactionHelper(amount, category);
+	  // Remove that transaction
+	  model.removeTransaction(0);
+	  // Check the post-conditions
+	  assertEquals(0, model.getTransactions().size());
+	  assertEquals(0, model.computeTransactionsTotalCost(), 0.001);
+  }
+  
+  @Test
+  public void testAddTransactionE2E() {
+	  // Perform initialization and check the preconditions
+	  double newAmount = 44.0;
+	  String newCategory = "Other";
+	  DataPanelView view = controller.getView().getDataPanelView();
+	  view.setAmount("" + newAmount);
+	  view.setCategory(newCategory);
+	  assertEquals(0, view.getTransactionsTableRowCount());
+	  // Call the unit under test: Add the new transaction
+	  view.getAddTransactionBtn().doClick();
+	  // Check the post-conditions
+	  assertEquals(2, view.getTransactionsTableRowCount());
+	  assertEquals(newAmount, view.getTransactionsTableValueAt(0, 1));
+	  assertEquals(newCategory, view.getTransactionsTableValueAt(0, 2));
+	  assertEquals(newAmount, view.getTransactionsTableValueAt(1, 3));
+  }
+}

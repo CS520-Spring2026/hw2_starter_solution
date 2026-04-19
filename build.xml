@@ -1,0 +1,117 @@
+<project name="ExpenseTrackerApp" default="compile" basedir="." xmlns:jacoco="antlib:org.jacoco.ant">
+
+	<property name="checkstyle.jar" value="lib/checkstyle-13.2.0-all.jar"/>
+    <property name="junit.jar" value="lib/junit-4.11.jar"/>
+	<property name="xchart.jar" value="lib/xchart-3.8.8.jar"/>
+	
+    <taskdef uri="antlib:org.jacoco.ant" resource="org/jacoco/ant/antlib.xml">
+        <classpath path="lib/jacocoant.jar"/>
+    </taskdef>
+	
+<!-- Clean up -->
+    <target name="clean" description="Clean">
+        <delete dir="bin"/>
+    	<delete dir="build"/>
+        <delete dir="jdoc"/>
+	<delete dir="coverage_report"/>
+    	<delete file="jacoco.exec"/>
+    </target>
+
+<!-- Initialize build -->
+    <target name="init">
+        <mkdir dir="bin"/>
+    	<mkdir dir="build"/>
+		<mkdir dir="jdoc"/>
+    </target>
+
+<!-- Generate the documentation based on the javadoc comments -->
+    <target name="document" depends="init" description="Generate
+    documentation for all sources">
+        <javadoc defaultexcludes="yes"
+		 destdir="jdoc"
+		 author="true"
+		 version="true"
+		 access="private"
+		 use="true"
+		 windowtitle="CS520 - Homework 2">
+	    <fileset dir="src"/>
+        <classpath location="${xchart.jar}"/>
+	</javadoc>
+    </target>
+
+<!-- Compile the project -->
+    <target name="compile" depends="init" description="Compile all sources">
+        <javac includeantruntime="true" 
+               srcdir="src"
+               destdir="bin"
+               debug="yes">
+	    <classpath path="bin"/>
+        <classpath location="${xchart.jar}"/>
+        </javac>
+    </target>
+
+<!-- Compile the test suite -->
+    <target name="compile.tests" depends="compile" description="Compile all tests">
+        <javac includeantruntime="true" 
+               srcdir="test"
+               destdir="bin"
+               debug="yes">
+        	<classpath location="${junit.jar}"/>
+        	<classpath location="${xchart.jar}"/>
+        </javac>
+    </target>
+
+<!-- Execute the test suite -->
+	<target name="test" depends="compile.tests" description="Run all unit tests">
+	    <echo message="Running unit tests ..."/>
+		<jacoco:coverage>
+	    	<junit fork="true"
+	    		   forkmode="once"
+			       printsummary="true" 
+	        	   showoutput="true" 
+	               haltonfailure="false">
+	    		<formatter type="plain" usefile="false"/>
+	    		<test name="ExpenseTrackerTest"/>
+	        	<classpath path="bin"/>
+	        	<classpath location="${junit.jar}"/>
+	    		<classpath location="${xchart.jar}"/>
+	    	</junit>
+		</jacoco:coverage>
+	</target> 
+		
+	<target name="coverage.report" depends="test" description="Generate coverage report">
+		<jacoco:report>
+
+		    <executiondata>
+		        <file file="jacoco.exec"/>
+		    </executiondata>
+
+		    <structure name="Expense Tracker App">
+		        <classfiles>
+		            <fileset dir="./bin/"/>
+		        </classfiles>
+		        <sourcefiles encoding="UTF-8">
+		            <fileset dir="./src"/>
+		        </sourcefiles>
+		    </structure>
+
+		    <html destdir="coverage_report"/>
+
+		</jacoco:report>
+	</target>
+	
+<!-- Perform linting on the project -->
+    <target name="init_lint">
+        <taskdef name="checkstyle"
+             classname="com.puppycrawl.tools.checkstyle.ant.CheckstyleAntTask"
+             classpath="${checkstyle.jar}"
+	/>
+    </target>
+    
+    <target name="lint" depends="init_lint" description="Lint all sources">
+        <checkstyle config="lib/sun_checks.xml">
+			<fileset dir="src" includes="**/*.java"/>
+			<formatter type="plain"/>
+      	</checkstyle>
+    </target>
+</project>
