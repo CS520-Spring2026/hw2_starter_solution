@@ -86,6 +86,13 @@ The Expense Tracker application applies the MVC architecture pattern as follows:
 
 ## Solution
 
+Some testing best practices followed are:
+* Have modular application code (e.g., model, view, controller)
+* Use automated testing tools (e.g., ant, junit)
+* Have different levels of testing (e.g., unit, end-to-end)
+* Have independent test cases (e.g., unit test cases for model)
+* ...
+
 We used the XChart library for the data visualization.
 
 Here are some aspects that made it easier to use:
