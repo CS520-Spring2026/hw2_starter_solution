@@ -77,3 +77,25 @@ The Expense Tracker application applies the MVC architecture pattern as follows:
 * **Open a Transaction List:**
   In the 'File' menu, select the "Open File..." menu item
   In the Open dialog, first select a valid input file and then click the 'Open' button
+
+* **Analyze:**
+  First select the 'Analysis' tab.
+  In that tab, select the analysis time window (e.g., 'Last week')
+  In the tab, click the 'Analyze' button
+  If there are transactions in that time window, displays the analysis results. If not, displays an error message.
+
+## Solution
+
+We used the XChart library for the data visualization.
+
+Here are some aspects that made it easier to use:
+* Deployability: Installed as a single jar file located in 'lib/xchart-3.8.8.jar'
+* Understandability: Provided documentation with a website, examples, and javadoc.
+* Extensibility: Applied the Strategy design pattern to support various charts.
+* ...
+
+Here are other aspects that made it harder to use:
+* There were many Charts to select among for your data visualization (e.g., BubbleChart, CategoryChart).
+* Each Chart could be customized in multiple ways (e.g., Styler).
+* The chart needed to be displayed in an XChartPanel.
+* ...
