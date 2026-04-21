@@ -40,7 +40,8 @@ From the root directory (containing the build.xml file):
 
 1. Build app: `ant compile`
 
-2. Run the app: `java -cp bin ExpenseTrackerApp`
+<!-- 2. Run the app: `java -cp bin ExpenseTrackerApp` -->
+2. Run the app: `java -cp "bin;lib\xchart-3.8.8.jar" ExpenseTrackerApp`
 
 3. Build and run tests: `ant test` (See the build/TEST-*.txt files for more details.)
 
