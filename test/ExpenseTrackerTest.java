@@ -9,6 +9,7 @@ import static org.junit.Assert.fail;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.table.DefaultTableModel;
 
@@ -21,6 +22,7 @@ import model.CSVImporter;
 import model.ExpenseTrackerModel;
 import model.InputValidation;
 import model.Transaction;
+import view.AnalysisPanelView;
 import view.DataPanelView;
 import view.ExpenseTrackerView;
 
@@ -33,7 +35,8 @@ public class ExpenseTrackerTest {
 		  InputValidation.VALID_CATEGORIES[4]
   };
   public static final String TEST_CSV_FILE_NAME = "test/test_expenses.csv";
-	
+  public static final String ANOTHER_TEST_CSV_FILE_NAME = "test/another_test_expenses.csv";	
+  
   // For unit testing
   private ExpenseTrackerModel model;
   // For end-to-end testing
@@ -203,5 +206,70 @@ public class ExpenseTrackerTest {
 	  assertEquals(newAmount, view.getTransactionsTableValueAt(0, 1));
 	  assertEquals(newCategory, view.getTransactionsTableValueAt(0, 2));
 	  assertEquals(newAmount, view.getTransactionsTableValueAt(1, 3));
+  }
+  
+  @Test
+  public void testAnalyzeHasNoTransactionsE2E() {
+	  // Perform initialization and check the preconditions
+	  DataPanelView dataPanelView = controller.getView().getDataPanelView();
+	  assertEquals(1, dataPanelView.getTransactionsTableRowCount());	  
+	  // Switch to the analysis tab
+	  controller.getView().getTabbedPanel().setSelectedIndex(1);
+	  // Call the unit under test: Try to analyze the model
+	  AnalysisPanelView analysisPanelView = controller.getView().getAnalysisPanelView();
+	  analysisPanelView.getAnalyzeButton().doClick();
+	  // Check the postconditions
+	  assertEquals(AnalysisPanelView.NO_TRANSACTIONS_ERROR_MESSAGE, analysisPanelView.getMessageLabelText());
+	  assertFalse(analysisPanelView.hasChartPanel());
+  }
+  
+  private double computeTotalCostPerCategory(ExpenseTrackerModel model, String category) {
+	  double categoryTotalCost = 0.0;
+	  for (Transaction currentTransaction : model.getTransactions()) {
+		  if (currentTransaction.getCategory().equals(category)) {
+			  categoryTotalCost += currentTransaction.getAmount();
+		  }
+	  }
+	  return categoryTotalCost;
+  }
+  
+  @Test
+  public void testAnalyzeHasTransactionsE2E() {
+	  // Perform initialization and check the preconditions
+	  DataPanelView dataPanelView = controller.getView().getDataPanelView();
+	  CSVImporter csvImporter = new CSVImporter();
+	  try {
+		  List<Transaction> importedTransactionsList = csvImporter.importTransactions(ANOTHER_TEST_CSV_FILE_NAME);
+		  for (Transaction importedTransaction : importedTransactionsList) {				
+			  controller.getModel().addTransaction(importedTransaction);
+		  }
+		  controller.getView().refresh();
+		  assertEquals(importedTransactionsList.size() + 1, dataPanelView.getTransactionsTableRowCount());
+		  double expectedTotalCost = 0.0;
+		  for (int i = 0; i < importedTransactionsList.size(); i++) {
+			  Transaction importedTransaction = importedTransactionsList.get(i);
+			  assertEquals(importedTransaction.getAmount(), dataPanelView.getTransactionsTableValueAt(i, 1));
+			  assertEquals(importedTransaction.getCategory(), dataPanelView.getTransactionsTableValueAt(i, 2));			  
+			  expectedTotalCost += importedTransaction.getAmount();
+		  }
+		  assertEquals(expectedTotalCost, dataPanelView.getTransactionsTableValueAt(importedTransactionsList.size(), 3));
+	  }
+	  catch (IOException ioe) {
+		  fail();
+	  }
+	  // Switch to the analysis tab
+	  controller.getView().getTabbedPanel().setSelectedIndex(1);
+	  // Call the unit under test: Try to analyze the model
+	  AnalysisPanelView analysisPanelView = controller.getView().getAnalysisPanelView();
+	  analysisPanelView.getAnalyzeButton().doClick();
+	  // Check the postconditions
+	  assertEquals("", analysisPanelView.getMessageLabelText());
+	  assertTrue(analysisPanelView.hasChartPanel());
+	  Map<String,Double> chartDataModel = analysisPanelView.getChartDataModel();
+	  for (String currentCategory : chartDataModel.keySet()) {
+		  double expectedTotalCost = computeTotalCostPerCategory(controller.getModel(), currentCategory);
+		  double actualTotalCost = chartDataModel.get(currentCategory);
+		  assertEquals(expectedTotalCost, actualTotalCost, 0.01);
+	  }
   }
 }

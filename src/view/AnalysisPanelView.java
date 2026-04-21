@@ -5,6 +5,9 @@ import java.awt.Color;
 import java.awt.FlowLayout;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -16,6 +19,7 @@ import javax.swing.JPanel;
 
 import org.knowm.xchart.CategoryChart;
 import org.knowm.xchart.CategoryChartBuilder;
+import org.knowm.xchart.CategorySeries;
 import org.knowm.xchart.XChartPanel;
 
 import model.ExpenseTrackerModel;
@@ -67,6 +71,42 @@ public class AnalysisPanelView extends JPanel
 	
 	public JButton getAnalyzeButton() {
 		return this.analyzeButton;
+	}
+	
+	public String getMessageLabelText() {
+		// For testing purposes
+		return this.messageLabel.getText();
+	}
+	
+	public boolean hasChartPanel() {
+		// For testing purposes
+		return (this.chartPanel != null);
+	}
+	
+	/**
+	 * Returns a map from category to the total cost of all transactions with that category.
+	 * 
+	 * @return A map from category to the total cost of all transactions with that category.
+	 */
+	public Map<String,Double> getChartDataModel() {
+		// For testing purposes
+		if (this.chartPanel == null) {
+			return null;
+		}
+		CategoryChart chart = this.chartPanel.getChart();
+		Map<String,Double> chartDataModel = new LinkedHashMap<String,Double>();		
+		CategorySeries categorySeries = chart.getSeriesMap().get(CHART_TITLE);
+		Collection xData = categorySeries.getXData();
+		Iterator xDataItr = xData.iterator();
+		Collection yData = categorySeries.getYData();
+		Iterator yDataItr = yData.iterator();
+		for (; xDataItr.hasNext(); ) {
+			String currentCategory = (String)xDataItr.next();
+			Double currentCategoryTotalCost = (Double)yDataItr.next();
+			chartDataModel.put(currentCategory, currentCategoryTotalCost);
+		}
+
+		return chartDataModel;
 	}
 	
 	/**
