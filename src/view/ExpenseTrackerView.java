@@ -22,6 +22,7 @@ public class ExpenseTrackerView extends JFrame {
   
   private JTabbedPane tabbedPanel;
   private DataPanelView dataPanelView;
+  private AnalysisPanelView analysisPanelView;
   
   private JMenuItem fileOpenFileMenuItem;
   private JMenuItem fileSaveAsMenuItem;
@@ -33,6 +34,10 @@ public class ExpenseTrackerView extends JFrame {
   
   public DataPanelView getDataPanelView() {
 	  return this.dataPanelView;
+  }
+  
+  public AnalysisPanelView getAnalysisPanelView() {
+	  return this.analysisPanelView;
   }
   
   public JMenuItem getOpenFileMenuItem() {
@@ -69,14 +74,15 @@ public class ExpenseTrackerView extends JFrame {
     // Layout components
     tabbedPanel = new JTabbedPane();
     dataPanelView = new DataPanelView();
-    JPanel analysisPanel = new JPanel();
+    analysisPanelView = new AnalysisPanelView();
     tabbedPanel.add("Data", dataPanelView);
-    tabbedPanel.add("Analyis", analysisPanel);
+    tabbedPanel.add("Analyis", analysisPanelView);
     add(tabbedPanel);
   
     // Set frame properties
     setSize(800, 600);
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    refresh();
     setVisible(true);
   
   }
@@ -105,9 +111,9 @@ public class ExpenseTrackerView extends JFrame {
   } 
 
   public void refresh() {  
-    // Pass to view
+    // Pass to views
     dataPanelView.refreshTable(model);
-  
+    analysisPanelView.setVisible(model);
   }
 
   // Other view methods

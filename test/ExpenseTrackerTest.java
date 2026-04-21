@@ -195,7 +195,7 @@ public class ExpenseTrackerTest {
 	  DataPanelView view = controller.getView().getDataPanelView();
 	  view.setAmount("" + newAmount);
 	  view.setCategory(newCategory);
-	  assertEquals(0, view.getTransactionsTableRowCount());
+	  assertEquals(1, view.getTransactionsTableRowCount());
 	  // Call the unit under test: Add the new transaction
 	  view.getAddTransactionBtn().doClick();
 	  // Check the post-conditions

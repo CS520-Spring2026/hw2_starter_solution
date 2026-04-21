@@ -46,6 +46,11 @@ public class ExpenseTrackerController {
         	saveAs();
         });
         
+        // Handle "Analyze" button clicks
+        view.getAnalysisPanelView().getAnalyzeButton().addActionListener(e -> {
+        	performDataAnalysis();
+        });
+        
         // Initialize view
         view.setVisible(true);
     }
@@ -123,5 +128,9 @@ public class ExpenseTrackerController {
     			view.displayErrorMessage(errorMessage);
     		}
     	}
+    }
+    
+    public void performDataAnalysis() {
+    	view.getAnalysisPanelView().performDataAnalysis(model);
     }
 }

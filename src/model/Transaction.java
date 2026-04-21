@@ -1,16 +1,18 @@
 package model;
 
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
 
 public class Transaction {
 
   private double amount;
   private String category;
   private String timestamp;
+  
+  public static final String TIMESTAMP_DATE_FORMAT = "dd-MM-yyyy HH:mm";
 
   /**
    * Creates a new Transaction with the given amount and category.
@@ -50,8 +52,11 @@ public class Transaction {
   }
 
   private String generateTimestamp() {
-    SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm");  
+    SimpleDateFormat sdf = new SimpleDateFormat(TIMESTAMP_DATE_FORMAT);  
     return sdf.format(new Date());
   }
 
+  public String toString() {
+	  return "Transaction<" + this.getAmount() + "," + this.getCategory() + "," + this.getTimestamp() + ">";
+  }
 }
