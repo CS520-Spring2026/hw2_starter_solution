@@ -55,8 +55,4 @@ public class Transaction {
     SimpleDateFormat sdf = new SimpleDateFormat(TIMESTAMP_DATE_FORMAT);  
     return sdf.format(new Date());
   }
-
-  public String toString() {
-	  return "Transaction<" + this.getAmount() + "," + this.getCategory() + "," + this.getTimestamp() + ">";
-  }
 }
