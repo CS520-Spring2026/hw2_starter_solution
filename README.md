@@ -128,12 +128,16 @@ The strategy interface is [TransactionExporter.java](/c:/Users/mtasmin/Downloads
 
 The current concrete strategy is [CSVExporter.java](/c:/Users/mtasmin/Downloads/CS520/sp26/hw2_starter_solution/src/model/CSVExporter.java:10), which implements `TransactionExporter`. This design improves extensibility because new exporters such as `JSONExporter` or `XMLExporter` can be added without changing clients to depend on a CSV-specific type. The controller can work against the strategy interface rather than a single file format implementation.
 
+The `AnalysisPanelView` also uses the XChart library to strategize the chart or charts used in the data visualization.
+
 The new data-visualization feature is implemented in:
 - [AnalysisPanelView.java](/c:/Users/mtasmin/Downloads/CS520/sp26/hw2_starter_solution/src/view/AnalysisPanelView.java:32)
 - [DataVizUtils.java](/c:/Users/mtasmin/Downloads/CS520/sp26/hw2_starter_solution/src/view/DataVizUtils.java:18)
 - [ExpenseTrackerController.java](/c:/Users/mtasmin/Downloads/CS520/sp26/hw2_starter_solution/src/controller/ExpenseTrackerController.java:18)
 
-`AnalysisPanelView` handles the visualization UI, chart creation, and error display. `DataVizUtils` computes the category summary for the selected time window. The controller wires the Analyze button to `performDataAnalysis()`. This structure keeps responsibilities separated and makes future chart-related extensions more localized.
+`AnalysisPanelView` handles the visualization UI, chart creation, and error display. `DataVizUtils` computes the category summary for the selected time window. The controller wires the Analyze button to `performDataAnalysis()`.
+
+The XChart library also applies the Template Method design pattern. For example, [`CategoryChart`](https://javadoc.scijava.org/XChart/org/knowm/xchart/CategoryChart.html) extends the `Chart` base class.
 
 **Reflection on XChart**
 
@@ -189,3 +193,19 @@ The two required end-to-end data-visualization tests are implemented in:
 Test runner screenshot:
 
 <img src="screenshots/testrunner_alltestcasepassing.png" alt="Test runner showing all test cases passing" width="360" />
+
+**Usability: AI Assistant**
+
+Here is one possible AI assistant design:
+* The user could interact with an AI assistant through a chat box in the application.
+* The assistant could answer questions about the user's expenses, summarize trends, or help extend the `ExpenseTrackerApp`.
+* Another option would be to use an AI library to extend the `ExpenseTrackerApp` with a feature such as text-to-speech, a machine learning predictive model, or an LLM chatbot.
+
+A possible Java library to use would be the OpenAI Java SDK.
+* It would allow the application to connect to an LLM service.
+* It could support a chatbot-style assistant for answering user questions about spending data.
+* It could also help developers extend the application with AI-assisted features.
+
+One risk or challenge is that the AI assistant could produce incorrect or misleading output.
+* A user might trust an incorrect spending summary or recommendation.
+* A developer would need to validate the AI output and handle errors carefully.
