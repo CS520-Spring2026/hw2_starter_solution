@@ -111,9 +111,9 @@ The constant-reference view shows where CSV formatting concerns are centralized 
 
 **Documentation**
 
-1. The README was updated to describe the analysis/data-visualization feature and to reflect on testing and XChart usage: [README.md](/c:/Users/mtasmin/Downloads/CS520/sp26/hw2_starter_solution/README.md:88).  
-2. API comments were added for the new strategy abstraction and related methods, for example in [TransactionExporter.java](/c:/Users/mtasmin/Downloads/CS520/sp26/hw2_starter_solution/src/model/TransactionExporter.java:4) and [CSVExporter.java](/c:/Users/mtasmin/Downloads/CS520/sp26/hw2_starter_solution/src/model/CSVExporter.java:7).  
-3. Generated Javadoc is present under [jdoc](</c:/Users/mtasmin/Downloads/CS520/sp26/hw2_starter_solution/jdoc>).
+1. The README was updated to describe the analysis/data-visualization feature and to reflect on testing and XChart usage: [README.md](README.md:88).  
+2. API comments were added for the new strategy abstraction and related methods, for example in [TransactionExporter.java](src/model/TransactionExporter.java:4) and [src/model/CSVExporter.java:7).  
+3. Generated Javadoc is present under [jdoc](<jdoc>).
 
 **Git Log**
 The repository history is incremental and task-oriented. The main commits correspond to importing the starter, extending model tests, adding the visualization feature, updating README documentation, refining coverage, and adding the end-to-end tests.
@@ -123,17 +123,17 @@ The repository history is incremental and task-oriented. The main commits corres
 **Strategy Design Pattern**
 The extensibility work is centered on separating the export abstraction from its CSV implementation.
 
-The strategy interface is [TransactionExporter.java](/c:/Users/mtasmin/Downloads/CS520/sp26/hw2_starter_solution/src/model/TransactionExporter.java:7). It defines the common operation:
+The strategy interface is [TransactionExporter.java](src/model/TransactionExporter.java:7). It defines the common operation:
 `String exportTransactions(List<Transaction> txns, String filename);`
 
-The current concrete strategy is [CSVExporter.java](/c:/Users/mtasmin/Downloads/CS520/sp26/hw2_starter_solution/src/model/CSVExporter.java:10), which implements `TransactionExporter`. This design improves extensibility because new exporters such as `JSONExporter` or `XMLExporter` can be added without changing clients to depend on a CSV-specific type. The controller can work against the strategy interface rather than a single file format implementation.
+The current concrete strategy is [CSVExporter.java](src/model/CSVExporter.java:10), which implements `TransactionExporter`. This design improves extensibility because new exporters such as `JSONExporter` or `XMLExporter` can be added without changing clients to depend on a CSV-specific type. The controller can work against the strategy interface rather than a single file format implementation.
 
 The `AnalysisPanelView` also uses the XChart library to strategize the chart or charts used in the data visualization.
 
 The new data-visualization feature is implemented in:
-- [AnalysisPanelView.java](/c:/Users/mtasmin/Downloads/CS520/sp26/hw2_starter_solution/src/view/AnalysisPanelView.java:32)
-- [DataVizUtils.java](/c:/Users/mtasmin/Downloads/CS520/sp26/hw2_starter_solution/src/view/DataVizUtils.java:18)
-- [ExpenseTrackerController.java](/c:/Users/mtasmin/Downloads/CS520/sp26/hw2_starter_solution/src/controller/ExpenseTrackerController.java:18)
+- [AnalysisPanelView.java](src/view/AnalysisPanelView.java:32)
+- [DataVizUtils.java](src/view/DataVizUtils.java:18)
+- [ExpenseTrackerController.java](src/controller/ExpenseTrackerController.java:18)
 
 `AnalysisPanelView` handles the visualization UI, chart creation, and error display. `DataVizUtils` computes the category summary for the selected time window. The controller wires the Analyze button to `performDataAnalysis()`.
 
@@ -164,7 +164,7 @@ Here are other aspects that made it harder to use:
 * ...
 
 **Unit Test Suite**
-The model-related tests are in [ExpenseTrackerTest.java](/c:/Users/mtasmin/Downloads/CS520/sp26/hw2_starter_solution/test/ExpenseTrackerTest.java:51). They cover:
+The model-related tests are in [ExpenseTrackerTest.java](test/ExpenseTrackerTest.java:51). They cover:
 - initial model state
 - invalid transaction amount
 - invalid transaction category
@@ -179,7 +179,7 @@ The coverage requirement for `ExpenseTrackerModel` and `Transaction` is satisfie
 - `ExpenseTrackerModel`: 100% coverage
 - `Transaction`: 100% coverage
 
-This evidence is in the generated report under [coverage_report/model/index.html](</c:/Users/mtasmin/Downloads/CS520/sp26/hw2_starter_solution/coverage_report/model/index.html>). Overall project coverage is 86%, while the specific required classes exceed the threshold.
+This evidence is in the generated report under [coverage_report/model/index.html](coverage_report/model/index.html). Overall package coverage is 70%, while the specific required classes exceed the threshold.
 
 Coverage screenshots:
 
@@ -189,8 +189,8 @@ Coverage screenshots:
 
 **End-to-End Test Suite**
 The two required end-to-end data-visualization tests are implemented in:
-- `testAnalyzeHasNoTransactionsE2E()`: [ExpenseTrackerTest.java](/c:/Users/mtasmin/Downloads/CS520/sp26/hw2_starter_solution/test/ExpenseTrackerTest.java:211)
-- `testAnalyzeHasTransactionsE2E()`: [ExpenseTrackerTest.java](/c:/Users/mtasmin/Downloads/CS520/sp26/hw2_starter_solution/test/ExpenseTrackerTest.java:236)
+- `testAnalyzeHasNoTransactionsE2E()`: [ExpenseTrackerTest.java](test/ExpenseTrackerTest.java:211)
+- `testAnalyzeHasTransactionsE2E()`: [ExpenseTrackerTest.java](test/ExpenseTrackerTest.java:236)
 
 Coverage screenshot:
 
