@@ -181,14 +181,20 @@ The coverage requirement for `ExpenseTrackerModel` and `Transaction` is satisfie
 
 This evidence is in the generated report under [coverage_report/model/index.html](</c:/Users/mtasmin/Downloads/CS520/sp26/hw2_starter_solution/coverage_report/model/index.html>). Overall project coverage is 86%, while the specific required classes exceed the threshold.
 
-Coverage screenshot:
+Coverage screenshots:
 
-<img src="screenshots/coverage_report.png" alt="Coverage report screenshot" width="360" />
+<img src="screenshots/coverage_report.png" alt="Overall coverage report screenhot" width="360"/>
+
+<img src="screenshots/coverage_report_model.png" alt="Model coverage report screenshot" width="360"/>
 
 **End-to-End Test Suite**
 The two required end-to-end data-visualization tests are implemented in:
 - `testAnalyzeHasNoTransactionsE2E()`: [ExpenseTrackerTest.java](/c:/Users/mtasmin/Downloads/CS520/sp26/hw2_starter_solution/test/ExpenseTrackerTest.java:211)
 - `testAnalyzeHasTransactionsE2E()`: [ExpenseTrackerTest.java](/c:/Users/mtasmin/Downloads/CS520/sp26/hw2_starter_solution/test/ExpenseTrackerTest.java:236)
+
+Coverage screenshot:
+
+<img src="screenshots/coverage_report_view.png" alt="View coverage report screenshot" width="360"/>
 
 Test runner screenshot:
 
