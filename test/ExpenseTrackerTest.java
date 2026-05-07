@@ -64,6 +64,8 @@ public class ExpenseTrackerTest {
 
   private void testAddTransactionHelper(double amount, String category) {
 	    // Check the pre-conditions
+            assertTrue(InputValidation.isValidAmount(amount));
+	    assertTrue(InputValidation.isValidCategory(category));
 	    assertEquals(0, model.getTransactions().size());
 	    assertEquals(0, model.computeTransactionsTotalCost(), 0.001);
 		
@@ -142,8 +144,10 @@ public class ExpenseTrackerTest {
 	  double amount = 100.0;
 	  String category = "Food";
 	  this.testAddTransactionHelper(amount, category);
+	  int validID = 0;
+	  assertTrue(validID >= 0 && validID <= model.getTransactions().size());
 	  // Remove that transaction
-	  model.removeTransaction(0);
+	  model.removeTransaction(validID);
 	  // Check the post-conditions
 	  assertEquals(0, model.getTransactions().size());
 	  assertEquals(0, model.computeTransactionsTotalCost(), 0.001);
@@ -196,6 +200,8 @@ public class ExpenseTrackerTest {
 	  double newAmount = 44.0;
 	  String newCategory = "Other";
 	  DataPanelView view = controller.getView().getDataPanelView();
+	  assertTrue(InputValidation.isValidAmount(newAmount));
+	  assertTrue(InputValidation.isValidCategory(newCategory));
 	  view.setAmount("" + newAmount);
 	  view.setCategory(newCategory);
 	  assertEquals(1, view.getTransactionsTableRowCount());
@@ -217,6 +223,8 @@ public class ExpenseTrackerTest {
 	  controller.getView().getTabbedPanel().setSelectedIndex(1);
 	  // Call the unit under test: Try to analyze the model
 	  AnalysisPanelView analysisPanelView = controller.getView().getAnalysisPanelView();
+	  assertEquals("", analysisPanelView.getMessageLabelText());
+	  assertFalse(analysisPanelView.hasChartPanel());
 	  analysisPanelView.getAnalyzeButton().doClick();
 	  // Check the postconditions
 	  assertEquals(AnalysisPanelView.NO_TRANSACTIONS_ERROR_MESSAGE, analysisPanelView.getMessageLabelText());
@@ -261,6 +269,8 @@ public class ExpenseTrackerTest {
 	  controller.getView().getTabbedPanel().setSelectedIndex(1);
 	  // Call the unit under test: Try to analyze the model
 	  AnalysisPanelView analysisPanelView = controller.getView().getAnalysisPanelView();
+	  assertEquals("", analysisPanelView.getMessageLabelText());
+          assertFalse(analysisPanelView.hasChartPanel());
 	  analysisPanelView.getAnalyzeButton().doClick();
 	  // Check the postconditions
 	  assertEquals("", analysisPanelView.getMessageLabelText());
